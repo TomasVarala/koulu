@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+  <h1>Login</h1>
+  <form id="loginForm">
+    <input name="email" type="email" placeholder="Email" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    document.querySelector('#loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value;
+      const password = form.password.value;
+  
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ email, password }),
+      });
+  
+      let result;
+      try {
+        result = await response.json();
+      } catch (err) {
+        alert("Invalid response from server");
+        return;
+      }
+  
+      alert(result.message || (response.ok ? 'Login successful' : 'Login failed'));
+  
+      if (response.ok) {
+        localStorage.setItem('accessToken', result.accessToken); // 🔥 Tallenna token!
+        window.location.href = '/add-album.html'; // 🔥 Ohjataan lisäämään albumeita
+      }
+    });
+  </script>  
+  
+</body>
+</html>

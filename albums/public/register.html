@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>Register</title></head>
+<body>
+  <h1>Register</h1>
+  <form id="registerForm">
+    <input name="name" placeholder="Name" required />
+    <input name="email" type="email" placeholder="Email" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <input name="passwordConfirm" type="password" placeholder="Confirm Password" required />
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    document.querySelector('#registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        password: form.password.value,
+        passwordConfirm: form.passwordConfirm.value,
+      };
+
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      alert(result.message || 'Registered');
+      if (response.ok) window.location.href = '/login.html';
+    });
+  </script>
+</body>
+</html>

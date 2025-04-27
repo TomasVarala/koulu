@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>Add Album</title></head>
+<body>
+  <h1>Add New Album</h1>
+  <form id="albumForm">
+    <input name="artist" placeholder="Artist" required />
+    <input name="title" placeholder="Title" required />
+    <input name="year" type="number" placeholder="Year" required />
+    <input name="genre" placeholder="Genre" required />
+    <input name="tracks" type="number" placeholder="Tracks" required />
+    <button type="submit">Add</button>
+  </form>
+
+  <script>
+    document.querySelector('#albumForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const album = {
+        artist: form.artist.value,
+        title: form.title.value,
+        year: Number(form.year.value),
+        genre: form.genre.value,
+        tracks: Number(form.tracks.value),
+      };
+  
+      const token = localStorage.getItem('accessToken'); // 🔥 Haetaan token
+  
+      const response = await fetch('/api/albums', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // 🔥 Lisätään Authorization-header
+        },
+        body: JSON.stringify(album),
+      });
+  
+      const result = await response.json();
+      alert(result.message || (response.ok ? 'Album added' : 'Unauthorized'));
+    });
+  </script>
+  
+  
+</body>
+</html>

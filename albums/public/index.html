@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Albums</title></head>
+<body>
+  <h1>Album List</h1>
+  <div id="albums"></div>
+
+  <script>
+    const token = localStorage.getItem('accessToken'); // 🔥 Hae token localStoragesta
+  
+    fetch('/api/albums', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}` // 🔥 Lähetä Authorization-header
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.data) {
+        document.getElementById('albums').innerHTML = data.data.map(album =>
+          `<div>
+            <strong>${album.artist}</strong> – ${album.title} (${album.year})
+          </div>`).join('');
+      } else {
+        document.getElementById('albums').innerHTML = `<div>No albums found</div>`;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById('albums').innerHTML = `<div>Could not load albums</div>`;
+    });
+  </script>
+  
+</body>
+</html>
