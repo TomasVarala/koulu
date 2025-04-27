@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest"
+    "start": "node App.js"
   },
   "keywords": [],
   "author": "",
